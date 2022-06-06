@@ -1,13 +1,16 @@
+"""Repo class"""
+from typing import Optional
 from urllib.parse import urlencode
 from seafileapi.files import SeafDir, SeafFile
 from seafileapi.utils import raise_does_not_exist
+
 
 class Repo(object):
     """
     A seafile library
     """
-    def __init__(self, client, repo_id, repo_name,
-                 encrypted, owner, perm):
+
+    def __init__(self, client, repo_id, repo_name, encrypted, owner, perm):
         self.client = client
         self.id = repo_id
         self.name = repo_name
@@ -18,49 +21,59 @@ class Repo(object):
     @classmethod
     def from_json(cls, client, repo_json):
 
-        repo_id = repo_json['id']
-        repo_name = repo_json['name']
-        encrypted = repo_json['encrypted']
-        perm = repo_json['permission']
-        owner = repo_json['owner']
+        repo_id = repo_json["id"]
+        repo_name = repo_json["name"]
+        encrypted = repo_json["encrypted"]
+        perm = repo_json["permission"]
+        owner = repo_json["owner"]
 
         return cls(client, repo_id, repo_name, encrypted, owner, perm)
 
     def is_readonly(self):
-        return 'w' not in self.perm
+        return "w" not in self.perm
 
-    @raise_does_not_exist('The requested file does not exist')
-    def get_file(self, path):
+    @raise_does_not_exist("The requested file does not exist")
+    def get_file(self, path) -> Optional[SeafFile]:
         """Get the file object located in `path` in this repo.
 
         Return a :class:`SeafFile` object
         """
-        assert path.startswith('/')
-        url = '/api2/repos/%s/file/detail/' % self.id
-        query = '?' + urlencode(dict(p=path))
-        file_json = self.client.get(url + query).json()
+        assert path.startswith("/")
+        try:
+            url = f"/api2/repos/{self.id}/file/detail/"
+            query = "?" + urlencode(dict(p=path))
+            file_json = self.client.get(url + query).json()
+            if "id" in file_json and "size" in file_json:
+                return SeafFile(self, path, file_json["id"], file_json["size"])
+        except Exception as error:
+            print(error, flush=True)
 
-        return SeafFile(self, path, file_json['id'], file_json['size'])
-
-    @raise_does_not_exist('The requested dir does not exist')
-    def get_dir(self, path):
+    @raise_does_not_exist("The requested dir does not exist")
+    def get_dir(self, path) -> Optional[SeafDir]:
         """Get the dir object located in `path` in this repo.
 
-        Return a :class:`SeafDir` object
+        Return a :class: `SeafDir` object
         """
-        assert path.startswith('/')
-        url = '/api2/repos/%s/dir/' % self.id
-        query = '?' + urlencode(dict(p=path))
-        resp = self.client.get(url + query)
-        dir_id = resp.headers['oid']
-        dir_json = resp.json()
-        dir = SeafDir(self, path, dir_id)
-        dir.load_entries(dir_json)
-        return dir
+        assert path.startswith("/")
+        try:
+            url = f"/api2/repos/{self.id}/dir/"
+            query = "?" + urlencode(dict(p=path))
+            response = self.client.get(url + query)
+            dir_id = response.headers["oid"]
+            dir_json = response.json()
+            dir = SeafDir(self, path, dir_id)
+            dir.load_entries(dir_json)
+            return dir
+        except Exception as error:
+            print(error, flush=True)
 
     def delete(self):
         """Remove this repo. Only the repo owner can do this"""
-        self.client.delete('/api2/repos/' + self.id)
+        response = self.client.delete(f"/api2/repos/{self.id}")
+        if response:
+            print(f"status deleted: {self.id} - {response.ok}")
+        else:
+            print(f"errors with delete {self.id}")
 
     def list_history(self):
         """List the history of this repo
@@ -87,6 +100,7 @@ class Repo(object):
 
     def restore(self, commit_id):
         pass
+
 
 class RepoRevision(object):
     def __init__(self, client, repo, commit_id):

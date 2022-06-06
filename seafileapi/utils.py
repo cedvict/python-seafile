@@ -1,28 +1,33 @@
 import string
 import random
 from functools import wraps
+from typing import Any, Union
 from urllib.parse import urlencode
 from seafileapi.exceptions import ClientHttpError, DoesNotExist
+
 
 def randstring(length=0):
     if length == 0:
         length = random.randint(1, 30)
-    return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
+    return "".join(random.choice(string.ascii_lowercase) for _ in range(length))
+
 
 def urljoin(base, *args):
     url = base
-    if url[-1] != '/':
-        url += '/'
+    if url[-1] != "/":
+        url += "/"
     for arg in args:
-        arg = arg.strip('/')
-        url += arg + '/'
-    if '?' in url:
+        arg = arg.strip("/")
+        url += arg + "/"
+    if "?" in url:
         url = url[:-1]
     return url
+
 
 def raise_does_not_exist(msg):
     """Decorator to turn a function that get a http 404 response to a
     :exc:`DoesNotExist` exception."""
+
     def decorator(func):
         @wraps(func)
         def wrapped(*args, **kwargs):
@@ -33,18 +38,23 @@ def raise_does_not_exist(msg):
                     raise DoesNotExist(msg)
                 else:
                     raise
+
         return wrapped
+
     return decorator
 
-def to_utf8(obj):
+
+def to_utf8(obj) -> bytes:
     if isinstance(obj, str):
-        return obj.encode('utf-8')
+        return obj.encode("utf-8")
     return obj
 
-def querystr(**kwargs):
-    return '?' + urlencode(kwargs)
 
-def utf8lize(obj):
+def querystr(**kwargs) -> str:
+    return "?" + urlencode(kwargs)
+
+
+def utf8lize(obj: Any) -> Union[list, dict, Any]:
     if isinstance(obj, dict):
         return {k: to_utf8(v) for k, v in obj.items()}
 
@@ -52,6 +62,14 @@ def utf8lize(obj):
         return [to_utf8(x) for x in obj]
 
     if isinstance(obj, str):
-        return obj.encode('utf-8')
+        return obj.encode("utf-8")
 
     return obj
+
+
+def is_ascii(text) -> bool:
+    try:
+        text.encode("ascii")
+    except UnicodeEncodeError:
+        return False
+    return True

@@ -1,3 +1,4 @@
+"""Group class"""
 
 
 class Group(object):
