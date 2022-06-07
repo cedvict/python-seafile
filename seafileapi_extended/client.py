@@ -8,7 +8,7 @@ from seafileapi.utils import urljoin
 
 from seafileapi_extended import SeafileAdmin
 from seafileapi_extended.exceptions import AuthenticationError
-from seafileapi_extended.groups import AdminGroups
+from seafileapi_extended.groups import AdminGroups, Groups
 from seafileapi_extended.ping import Ping
 from seafileapi_extended.utils import is_ascii
 from seafileapi.exceptions import ClientHttpError
@@ -121,10 +121,3 @@ class SeafileApiClient(client.SeafileApiClient):
                 raise ClientHttpError(response.status_code, msg)
             return response
 
-
-class Groups(object):
-    def __init__(self, client):
-        pass
-
-    def create_group(self, name):
-        pass
