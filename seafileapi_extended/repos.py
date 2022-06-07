@@ -1,5 +1,4 @@
 """Repos class"""
-from seafileapi_extended import SeafDir
 from seafileapi_extended.repo import Repo
 from seafileapi_extended.utils import raise_does_not_exist
 from urllib.parse import urlencode
@@ -72,6 +71,7 @@ class Repos(object):
             According to the email to filter on the Shared folder. if None then no filter.
         :return:    [list(SeafDir)]
         """
+        from seafileapi_extended import SeafDir
 
         repos_json = self.client.get("/api/v2.1/shared-folders/").json()
         shared_folders = []

@@ -47,7 +47,7 @@ class Groups(object):
 
         url = "/api2/groups/{group_id}/".format(group_id=group.group_id)
         params = {"operation": "rename", "newname": group_newname}
-        resp_str = self.client.post(url, data=params, expected=[200])
+        self.client.post(url, data=params, expected=[200])
         group.group_name = group_newname  # Patch local object
         return group
 

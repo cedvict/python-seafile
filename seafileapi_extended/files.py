@@ -18,7 +18,7 @@ class _SeafDirentBase(object):
     It provides implementation of their common operations.
     """
 
-    isdir = None
+    isdir: bool = False
 
     def __init__(self, repo, path, object_id, size=0):
         """
@@ -146,6 +146,7 @@ class _SeafDirentBase(object):
                 return link
             except Exception as e:
                 print(e, flush=True)
+        return None
 
 
 class SeafDir(_SeafDirentBase):
@@ -201,7 +202,7 @@ class SeafDir(_SeafDirentBase):
 
     def upload(
         self,
-        file_data: str | bytes,
+        file_data,
         filename: str,
         relative_path: str = "",
         replace=False,
@@ -214,7 +215,7 @@ class SeafDir(_SeafDirentBase):
         Return a :class:`SeafFile` object of the newly uploaded file.
         """
         if isinstance(file_data, str):
-            file_data = io.BytesIO(file_data.encode("utf-8"))
+            file_data = io.BytesIO(file_data.encode())
         upload_url = self._get_upload_link()
         payload = {
             "file": (filename, file_data),
@@ -236,21 +237,13 @@ class SeafDir(_SeafDirentBase):
         Return a :class:`SeafFile` object of the newly uploaded file.
         """
         name = name or os.path.basename(filepath)
-        with open(filepath, "rb") as fp:
-            return self.upload(fp, name, relative_path, replace)
+        fp = open(filepath, 'rb')
+        return self.upload(fp, name, relative_path, replace)
 
     def _get_upload_link(self):
         url = f"/api2/repos/{self.repo.id}/upload-link/" + querystr(p=self.path)
         resp = self.client.get(url)
         return re.match(r'"(.*)"', resp.text).group(1)
-
-    def _load_dirent(self, dirent_json):
-        dirent_json = utf8lize(dirent_json)
-        path = posixpath.join(self.path, dirent_json["name"])
-        if dirent_json["type"] == "file":
-            return SeafFile(self.repo, path, dirent_json["id"], dirent_json["size"])
-        else:
-            return SeafDir(self.repo, path, dirent_json["id"], 0)
 
     def get_uploadable_sharelink(self):
         """Generate a uploadable shared link to this dir.
@@ -266,6 +259,7 @@ class SeafDir(_SeafDirentBase):
         self.entries = [self._load_dirent(entry_json) for entry_json in dirents_json]
 
     def _load_dirent(self, dirent_json):
+        dirent_json = utf8lize(dirent_json)
         path = posixpath.join(self.path, dirent_json["name"])
         if dirent_json["type"] == "file":
             return SeafFile(self.repo, path, dirent_json["id"], dirent_json["size"])

@@ -11,7 +11,8 @@ class SeafileAdmin(object):
 
     def list_accounts(self, start=0, limit=100, scope=None):
         """
-        Return a list of :class:`Account` objects. To retrieve all users, just set both start and limit to -1.
+        Return a list of :class:`Account` objects. To retrieve all users,
+            just set both start and limit to -1.
         :param start: (default to 0)
         :param limit: (default to 100)
         :param scope: (default None, accepted values: 'LDAP' or 'DB' or 'LDAPImport')

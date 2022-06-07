@@ -19,12 +19,11 @@ class Account(object):
         self.total = total
 
     def __str__(self):
-        return "SeafileAccount<id={}, email={}, usage={}Mo, total={}Mo, is_active={}>".format(
-            self.id,
-            self.email,
-            self.usage / 1000000,
-            self.total / 1000000,
-            self.is_active,
+        return (
+            f"SeafileAccount<id={self.id}, email={self.email},"
+            f" usage={self.usage / 1000000}Mo,"
+            f" total={self.total / 1000000}Mo,"
+            f" is_active={self.is_active}>"
         )
 
     @classmethod

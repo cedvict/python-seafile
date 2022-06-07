@@ -48,6 +48,7 @@ class Group(object):
         url = "/api/v2.1/groups/%s/" % self.group_id
         param = {owner: owner}
         resp_json = self.client.put(url, data=param).json()
+        return resp_json
 
 
 class AdminGroup(object):

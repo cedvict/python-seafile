@@ -51,6 +51,7 @@ class Repo(object):
                 return SeafFile(self, path, file_json["id"], file_json["size"])
         except Exception as error:
             print(error, flush=True)
+        return None
 
     @raise_does_not_exist("The requested dir does not exist")
     def get_dir(self, path) -> Optional[SeafDir]:
@@ -70,6 +71,7 @@ class Repo(object):
             return dir
         except Exception as error:
             print(error, flush=True)
+            return None
 
     def delete(self) -> Response:
         """Remove this repo. Only the repo owner can do this"""
@@ -175,6 +177,7 @@ class Repo(object):
             resp = self.client.delete(url + query)
         else:
             raise ValueError("Invalid share operation: {}".format(operation))
+        return resp
 
     def share(self, share_type, users=None, group_id=None, permission=None):
         self._share_operation(

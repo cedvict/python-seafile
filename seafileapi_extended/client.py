@@ -8,7 +8,7 @@ from seafileapi_extended import SeafileAdmin
 from seafileapi_extended.exceptions import AuthenticationError
 from seafileapi_extended.groups import AdminGroups, Groups
 from seafileapi_extended.ping import Ping
-from seafileapi_extended.utils import is_ascii
+from seafileapi_extended.utils import is_ascii, urljoin
 from seafileapi_extended.exceptions import ClientHttpError
 from seafileapi_extended.repos import Repos
 from sys import exit
@@ -131,6 +131,7 @@ class SeafileApiClient(object):
             response = requests.request(*args, **kwargs)
         except Exception as e:
             print(e, flush=True)
+            return None
         else:
             if response.status_code not in expected:
                 msg = "Expected %s, but get %s" % (

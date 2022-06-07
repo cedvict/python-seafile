@@ -1,15 +1,21 @@
 """Seafile api client"""
 from seafileapi_extended.admin import SeafileAdmin
 from seafileapi_extended.client import SeafileApiClient
-from seafileapi_extended.exceptions import UserExisted, GroupExisted, ClientHttpError, OperationError, DoesNotExist
+from seafileapi_extended.exceptions import (
+    UserExisted,
+    GroupExisted,
+    ClientHttpError,
+    OperationError,
+    DoesNotExist,
+)
 from seafileapi_extended.group import Group, AdminGroup, GroupMember
 from seafileapi_extended.groups import Groups, AdminGroups
 from seafileapi_extended.files import SeafDir, SeafFile
 from seafileapi_extended.repo import Repo, RepoRevision
 from seafileapi_extended.repos import Repos
-from seafileapi_extended.utils import is_ascii
 
-__version__ = "1.0.2"
+
+__version__ = "1.0.5"
 
 
 __all__ = [
@@ -20,6 +26,8 @@ __all__ = [
     Group.__name__,
     GroupMember.__name__,
     ClientHttpError.__name__,
+    UserExisted.__name__,
+    GroupExisted.__name__,
     OperationError.__name__,
     DoesNotExist.__name__,
     RepoRevision.__name__,
@@ -37,5 +45,11 @@ def connect(
     """
     Connect to seafile server
     """
-    api_client = SeafileApiClient(server, username, password, token, verify_ssl)
+    api_client = SeafileApiClient(
+        server,
+        username,
+        password,
+        token,
+        verify_ssl,
+    )
     return api_client
