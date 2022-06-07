@@ -1,0 +1,34 @@
+[project]
+name = "seafileapi_extended"
+authors = [
+    { name = "Cedvict Loknov", email = "cedvict@gmail.com" }
+]
+maintainers = [
+    { name = "Cedvict Loknov", email = "cedvict@gmail.com" }
+]
+readme = "README.md"
+keywords = ['Seafile', 'Seafile client', 'File storage', 'Cloud storage', 'File management']
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Intended Audience :: Developers',
+    'Topic :: Internet :: WWW/HTTP :: Session',
+    'Topic :: Internet :: WWW/HTTP :: WSGI',
+    'Topic :: Software Development :: Libraries :: Application Frameworks',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Framework :: FastAPI',
+    'License :: OSI Approved :: Apache Software License',
+    'Programming Language :: Python :: 3.10',
+]
+requires-python = ">=3.10"
+dynamic = ["version", "description"]
+dependencies = [
+    "seafileapi",
+]
+
+[project.urls]
+Documentation = "https://github.com/haiwen/python-seafile/blob/master/doc.md"
+
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+

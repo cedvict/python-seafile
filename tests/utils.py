@@ -4,7 +4,7 @@ import random
 
 
 def randstring(length=12):
-    return "".join(random.choice(string.ascii_lowercase) for i in range(length))
+    return "".join(random.choice(string.ascii_lowercase) for _ in range(length))
 
 
 def datafile(filename):

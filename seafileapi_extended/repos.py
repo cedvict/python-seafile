@@ -1,14 +1,11 @@
 """Repos class"""
-from seafileapi.repo import Repo
+from seafileapi_extended.repo import Repo
 from seafileapi.utils import raise_does_not_exist
 from urllib.parse import urlencode
-from typing import Optional
+from seafileapi import repos
 
 
-class Repos(object):
-    def __init__(self, client: "SeafileApiClient"):
-        self.client = client
-
+class Repos(repos.Repos):
     def create_repo(self, name, password=None):
         data = {"name": name}
         if password:
@@ -18,6 +15,7 @@ class Repos(object):
             data = response.json()
             if "repo_id" in data:
                 return self.get_repo(data["repo_id"])
+            return response
         except Exception as error:
             print(error, flush=True)
 
