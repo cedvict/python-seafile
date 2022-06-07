@@ -3,10 +3,11 @@ from typing import Optional
 import re
 import requests
 from requests import Response
-
-from seafileapi.utils import urljoin, is_ascii
+from seafileapi import client
+from seafileapi.utils import urljoin
+from seafileapi_extended.utils import is_ascii
 from seafileapi.exceptions import ClientHttpError
-from seafileapi.repos import Repos
+from seafileapi_extended.repos import Repos
 from sys import exit
 
 request_filename_pattern = re.compile(b"filename\*=.*")
@@ -14,7 +15,7 @@ request_filename_pattern = re.compile(b"filename\*=.*")
 seahub_api_auth_token = 40
 
 
-class SeafileApiClient(object):
+class SeafileApiClient(client.SeafileApiClient):
     """Wraps seafile web api"""
 
     def __init__(
@@ -26,9 +27,7 @@ class SeafileApiClient(object):
         verify_ssl: bool = True,
     ):
         """Wraps various basic operations to interact with seahub http api."""
-        self.server = server
-        self.username = username
-        self.password = password
+        super().__init__(server, username, password)
         self._token = token
 
         self.verify_ssl = verify_ssl
@@ -40,10 +39,7 @@ class SeafileApiClient(object):
             self._get_token()
 
     def _get_token(self):
-        data = {
-            "username": self.username,
-            "password": self.password,
-        }
+        data = {"username": self.username, "password": self.password}
         url = urljoin(self.server, "/api2/auth-token/")
         try:
             with requests.post(
@@ -61,23 +57,6 @@ class SeafileApiClient(object):
                         exit("The length of seahub api auth token should be 40")
         except Exception as error:
             exit(error)
-
-    def __str__(self):
-        return "SeafileApiClient[server=%s, user=%s]" % (self.server, self.username)
-
-    __repr__ = __str__
-
-    def get(self, *args, **kwargs) -> Response:
-        return self._send_request("GET", *args, **kwargs)
-
-    def post(self, *args, **kwargs) -> Response:
-        return self._send_request("POST", *args, **kwargs)
-
-    def put(self, *args, **kwargs) -> Response:
-        return self._send_request("PUT", *args, **kwargs)
-
-    def delete(self, *args, **kwargs) -> Response:
-        return self._send_request("delete", *args, **kwargs)
 
     def _rewrite_request(self, *args, **kwargs):
         def func(prepared_request):

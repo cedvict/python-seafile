@@ -2,7 +2,7 @@
 
 import pytest
 
-from seafileapi.exceptions import DoesNotExist
+from seafileapi_extended.exceptions import DoesNotExist
 from tests.utils import randstring
 
 

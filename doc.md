@@ -49,9 +49,9 @@
 
 ```python
 
-	import seafileapi
-	
-	client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
 ```
 
 **Return Type**
@@ -69,10 +69,10 @@ A Client Object
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
 ```
 
 **Return Type**
@@ -93,11 +93,11 @@ None
 
 ```python
 
-    import seafileapi
+import seafileapi_extended
 
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    is_readonly = repo.is_readonly()
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+is_readonly = repo.is_readonly()
 ```
 
 **Return Type**
@@ -114,26 +114,44 @@ None
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo_list = client.repos.list_repos()
+import seafileapi_extended
 
-    print(repo_list)
-    Out >>> [<seafileapi.repo.Repo object at 0x7f1bb0769750>,
-             <seafileapi.repo.Repo object at 0x7f1bb07693d0>,
-             <seafileapi.repo.Repo object at 0x7f1bb0769a50>,
-             <seafileapi.repo.Repo object at 0x7f1bb077cc10>,
-             <seafileapi.repo.Repo object at 0x7f1bb077cfd0>,
-             <seafileapi.repo.Repo object at 0x7f1bb077ca10>]
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo_list = client.repos.list_repos()
 
-    print([repo.name for repo in repo_list])
-    Out >>> ['alphabox',
-             'hello',
-             'Doc',
-             'obj_test',
-             'fs_test',
-             'global']
+print(repo_list)
+Out >> > [ < seafileapi_extended.repo.Repo
+object
+at
+0x7f1bb0769750 >,
+< seafileapi_extended.repo.Repo
+object
+at
+0x7f1bb07693d0 >,
+< seafileapi_extended.repo.Repo
+object
+at
+0x7f1bb0769a50 >,
+< seafileapi_extended.repo.Repo
+object
+at
+0x7f1bb077cc10 >,
+< seafileapi_extended.repo.Repo
+object
+at
+0x7f1bb077cfd0 >,
+< seafileapi_extended.repo.Repo
+object
+at
+0x7f1bb077ca10 >]
+
+print([repo.name for repo in repo_list])
+Out >> > ['alphabox',
+          'hello',
+          'Doc',
+          'obj_test',
+          'fs_test',
+          'global']
 ```
 
 **Return Type**
@@ -151,10 +169,10 @@ A list of Libraries Object
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.create_repo('test_repo')
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.create_repo('test_repo')
 ```
 
 **Return Type**
@@ -172,11 +190,11 @@ None
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    repo.delete()
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+repo.delete()
 ```
 
 **Return Type**
@@ -194,18 +212,23 @@ None
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    seafdir = repo.get_dir('/root')
-    print(seafdir.__dict__)
-    Out >>> {'client': SeafileApiClient[server=http://127.0.0.1:8000, user=admin@admin.com],
-             'entries': [],
-             'id': 'c3742dd86004d51c358845fa3178c87e4ab3aa60',
-             'path': '/root',
-             'repo': <seafileapi.repo.Repo object at 0x7f2af56b1490>,
-             'size': 0}
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+seafdir = repo.get_dir('/root')
+print(seafdir.__dict__)
+Out >> > {'client': SeafileApiClient[server = http: // 127.0
+.0
+.1: 8000, user = admin @ admin.com],
+'entries': [],
+'id': 'c3742dd86004d51c358845fa3178c87e4ab3aa60',
+'path': '/root',
+'repo': < seafileapi_extended.repo.Repo
+object
+at
+0x7f2af56b1490 >,
+'size': 0}
 ```
 
 **Return Type**
@@ -225,30 +248,39 @@ A Directory Object
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    seafdir = repo.get_dir('/root')
-	
-    lst = seafdir.ls(force_refresh=True)
-    print(lst)
-    Out >>> [SeafDir[repo=01ccc4,path=/Seahub/6.1.x,entries=14],
-             SeafDir[repo=01ccc4,path=/Seahub/6.2.2-pro,entries=1],
-             SeafDir[repo=01ccc4,path=/Seahub/6.2.3,entries=15],
-             SeafDir[repo=01ccc4,path=/Seahub/6.2.x,entries=5],
-             SeafFile[repo=01ccc4,path=/Seahub/.DS_Store,size=6148],
-             SeafFile[repo=01ccc4,path=/Seahub/error.md,size=127],
-             SeafFile[repo=01ccc4,path=/Seahub/preview-research.md,size=1030]]
+import seafileapi_extended
 
-    print([dirent.name for dirent in lst])
-    Out >>> ['6.1.x',
-             '6.2.2-pro',
-             '6.2.3',
-             '6.2.x',
-             '.DS_Store',
-             'error.md',
-             'preview-research.md']
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+seafdir = repo.get_dir('/root')
+
+lst = seafdir.ls(force_refresh=True)
+print(lst)
+Out >> > [SeafDir[repo = 01
+ccc4, path = / Seahub / 6.1.x, entries = 14],
+SeafDir[repo = 01
+ccc4, path = / Seahub / 6.2
+.2 - pro, entries = 1],
+SeafDir[repo = 01
+ccc4, path = / Seahub / 6.2
+.3, entries = 15],
+SeafDir[repo = 01
+ccc4, path = / Seahub / 6.2.x, entries = 5],
+SeafFile[repo = 01
+ccc4, path = / Seahub /.DS_Store, size = 6148],
+SeafFile[repo = 01
+ccc4, path = / Seahub / error.md, size = 127],
+SeafFile[repo = 01
+ccc4, path = / Seahub / preview - research.md, size = 1030]]
+
+print([dirent.name for dirent in lst])
+Out >> > ['6.1.x',
+          '6.2.2-pro',
+          '6.2.3',
+          '6.2.x',
+          '.DS_Store',
+          'error.md',
+          'preview-research.md']
 ```
 
 **Return Type**
@@ -265,13 +297,13 @@ List of Directory and File
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    seafdir = repo.get_dir('/root')
-	
-    new_dir = seafdir.mkdir('tmp_dir')
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+seafdir = repo.get_dir('/root')
+
+new_dir = seafdir.mkdir('tmp_dir')
 ```
 
 **Return Type**
@@ -287,13 +319,13 @@ None
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    seafdir = repo.get_dir('/root')
-	
-    seafdir.delete()
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+seafdir = repo.get_dir('/root')
+
+seafdir.delete()
 ```
 
 **Return Type**
@@ -312,18 +344,23 @@ A Response Instance
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    seaffile = repo.get_file('/root/test.md')
+import seafileapi_extended
 
-    print(seaffile.__dict__)
-    Out >>> {'client': SeafileApiClient[server=http://127.0.0.1:8000, user=admin@admin.com],
-             'id': '0000000000000000000000000000000000000000',
-             'path': '/root/test.md',
-             'repo': <seafileapi.repo.Repo object at 0x7f2af56b1490>,
-             'size': 0}
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+seaffile = repo.get_file('/root/test.md')
+
+print(seaffile.__dict__)
+Out >> > {'client': SeafileApiClient[server = http: // 127.0
+.0
+.1: 8000, user = admin @ admin.com],
+'id': '0000000000000000000000000000000000000000',
+'path': '/root/test.md',
+'repo': < seafileapi_extended.repo.Repo
+object
+at
+0x7f2af56b1490 >,
+'size': 0}
 ```
 
 **Return Type**
@@ -344,13 +381,13 @@ None
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    seaffile = repo.get_file('/root/test.md')
-	
-    content = seaffile.get_content()
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+seaffile = repo.get_file('/root/test.md')
+
+content = seaffile.get_content()
 ```
 
 **Return Type**
@@ -366,13 +403,13 @@ File Content
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    seafdir = repo.get_dir('/root')
-	
-    new_file = seafdir.create_empty_file('tmp_file.md')
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+seafdir = repo.get_dir('/root')
+
+new_file = seafdir.create_empty_file('tmp_file.md')
 ```
 
 **Return Type**
@@ -390,13 +427,13 @@ A File Object of new empty file
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    seafdir = repo.get_dir('/root')
-	
-    file = seafdir.upload_local_file('/home/ubuntu/env.md')
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+seafdir = repo.get_dir('/root')
+
+file = seafdir.upload_local_file('/home/ubuntu/env.md')
 ```
 
 **Return Type**
@@ -417,13 +454,13 @@ None
 
 ```python
 
-    import seafileapi
-	
-    client = seafileapi.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
-    repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
-    seaffile = repo.get_file('/root/test.md')
-	
-    seaffile.delete()
+import seafileapi_extended
+
+client = seafileapi_extended.connect('http://127.0.0.1:8000', 'test@admin.com', 'password')
+repo = client.repos.get_repo('09c16e2a-ff1a-4207-99f3-1351c3f1e507')
+seaffile = repo.get_file('/root/test.md')
+
+seaffile.delete()
 ```
 
 **Return Type**
