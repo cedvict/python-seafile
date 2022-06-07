@@ -52,6 +52,20 @@ class _SeafDirentBase(files._SeafDirentBase):
 
 
 class SeafDir(_SeafDirentBase, files.SeafDir):
+
+    def share_to_user(self, email, permission):
+        url = f'/api2/repos/{self.repo.id}/dir/shared_items/' + querystr(p=self.path)
+        putdata = {
+            'share_type': 'user',
+            'username': email,
+            'permission': permission
+        }
+        response = self.client.put(url, data=putdata)
+        if response:
+            return response.status_code == 200
+        else:
+            print(f'errors with share: {email}, {permission}')
+
     def upload(
         self,
         file_data: str | bytes,

@@ -5,6 +5,11 @@ import requests
 from requests import Response
 from seafileapi import client
 from seafileapi.utils import urljoin
+
+from seafileapi_extended import SeafileAdmin
+from seafileapi_extended.exceptions import AuthenticationError
+from seafileapi_extended.groups import AdminGroups
+from seafileapi_extended.ping import Ping
 from seafileapi_extended.utils import is_ascii
 from seafileapi.exceptions import ClientHttpError
 from seafileapi_extended.repos import Repos
@@ -34,6 +39,9 @@ class SeafileApiClient(client.SeafileApiClient):
         self.default_timeout = 30
         self.repos = Repos(self)
         self.groups = Groups(self)
+        self.admin_groups = AdminGroups(self)
+        self.ping = Ping(self)
+        self.admin = SeafileAdmin(self)
 
         if token is None:
             self._get_token()
@@ -46,6 +54,10 @@ class SeafileApiClient(client.SeafileApiClient):
                 url, data=data, verify=self.verify_ssl, timeout=self.default_timeout
             ) as response:
                 if response.status_code != 200:
+                    if response.status_code == 400:
+                        resp_json = response.json()
+                        if 'non_field_errors' in resp_json:
+                            raise AuthenticationError(response.status_code, response.content)
                     raise ClientHttpError(response.status_code, response.content)
                 try:
                     _token = response.json()

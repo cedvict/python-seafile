@@ -1,11 +1,12 @@
 """Seafile api client"""
-from seafileapi.admin import SeafileAdmin
 from seafileapi.client import Groups
 from seafileapi.exceptions import ClientHttpError, OperationError, DoesNotExist
 from seafileapi.group import Group
 from seafileapi.repo import RepoRevision
 
+from seafileapi_extended.admin import SeafileAdmin
 from seafileapi_extended.client import SeafileApiClient
+from seafileapi_extended.exceptions import UserExisted, GroupExisted
 from seafileapi_extended.files import SeafDir, SeafFile
 from seafileapi_extended.repo import Repo
 from seafileapi_extended.repos import Repos
