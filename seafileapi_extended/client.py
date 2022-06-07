@@ -3,15 +3,13 @@ from typing import Optional
 import re
 import requests
 from requests import Response
-from seafileapi import client
-from seafileapi.utils import urljoin
 
 from seafileapi_extended import SeafileAdmin
 from seafileapi_extended.exceptions import AuthenticationError
 from seafileapi_extended.groups import AdminGroups, Groups
 from seafileapi_extended.ping import Ping
 from seafileapi_extended.utils import is_ascii
-from seafileapi.exceptions import ClientHttpError
+from seafileapi_extended.exceptions import ClientHttpError
 from seafileapi_extended.repos import Repos
 from sys import exit
 
@@ -20,7 +18,7 @@ request_filename_pattern = re.compile(b"filename\*=.*")
 seahub_api_auth_token = 40
 
 
-class SeafileApiClient(client.SeafileApiClient):
+class SeafileApiClient(object):
     """Wraps seafile web api"""
 
     def __init__(
@@ -32,7 +30,9 @@ class SeafileApiClient(client.SeafileApiClient):
         verify_ssl: bool = True,
     ):
         """Wraps various basic operations to interact with seahub http api."""
-        super().__init__(server, username, password)
+        self.server = server
+        self.username = username
+        self.password = password
         self._token = token
 
         self.verify_ssl = verify_ssl
@@ -56,8 +56,10 @@ class SeafileApiClient(client.SeafileApiClient):
                 if response.status_code != 200:
                     if response.status_code == 400:
                         resp_json = response.json()
-                        if 'non_field_errors' in resp_json:
-                            raise AuthenticationError(response.status_code, response.content)
+                        if "non_field_errors" in resp_json:
+                            raise AuthenticationError(
+                                response.status_code, response.content
+                            )
                     raise ClientHttpError(response.status_code, response.content)
                 try:
                     _token = response.json()
@@ -69,6 +71,23 @@ class SeafileApiClient(client.SeafileApiClient):
                         exit("The length of seahub api auth token should be 40")
         except Exception as error:
             exit(error)
+
+    def __str__(self):
+        return "SeafileApiClient[server=%s, user=%s]" % (self.server, self.username)
+
+    __repr__ = __str__
+
+    def get(self, *args, **kwargs):
+        return self._send_request("GET", *args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        return self._send_request("POST", *args, **kwargs)
+
+    def put(self, *args, **kwargs):
+        return self._send_request("PUT", *args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        return self._send_request("delete", *args, **kwargs)
 
     def _rewrite_request(self, *args, **kwargs):
         def func(prepared_request):
@@ -120,4 +139,3 @@ class SeafileApiClient(client.SeafileApiClient):
                 )
                 raise ClientHttpError(response.status_code, msg)
             return response
-

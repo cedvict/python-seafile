@@ -1,12 +1,13 @@
 """Repos class"""
 from seafileapi_extended import SeafDir
 from seafileapi_extended.repo import Repo
-from seafileapi.utils import raise_does_not_exist
+from seafileapi_extended.utils import raise_does_not_exist
 from urllib.parse import urlencode
-from seafileapi import repos
 
 
-class Repos(repos.Repos):
+class Repos(object):
+    def __init__(self, client):
+        self.client = client
 
     def create_repo(self, name, desc, password=None):
         data = {"name": name}
@@ -47,7 +48,7 @@ class Repos(repos.Repos):
         except Exception as e:
             print(e, flush=True)
 
-    @raise_does_not_exist('The requested library does not exist')
+    @raise_does_not_exist("The requested library does not exist")
     def get_repo_by_name(self, name):
         """
         Get the repo which the name
@@ -72,14 +73,14 @@ class Repos(repos.Repos):
         :return:    [list(SeafDir)]
         """
 
-        repos_json = self.client.get('/api/v2.1/shared-folders/').json()
+        repos_json = self.client.get("/api/v2.1/shared-folders/").json()
         shared_folders = []
 
         for t_folder in repos_json:
 
             seaf_dir_obj = SeafDir.create_from_shared_folder(t_folder, self.client)
 
-            t_user_email = t_folder.get("user_email",None)
+            t_user_email = t_folder.get("user_email", None)
 
             if shared_email:
                 if t_user_email == shared_email:

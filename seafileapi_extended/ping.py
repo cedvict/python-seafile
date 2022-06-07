@@ -7,5 +7,5 @@ class Ping(object):
 
     def auth_ping(self):
         """Call the authenticated 'ping' endpoint. Useful to test credential validity."""
-        response = self.client.get('/api2/auth/ping/').content
-        return response == 'pong'
+        response = self.client.get("/api2/auth/ping/").content
+        return response == "pong"
